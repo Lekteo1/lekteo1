@@ -1,0 +1,15 @@
+{
+  "name": "lekteo-clone",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static front-end recreation of the Lekteo home page (educational study project). No dependencies, no build step.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "dev": "node tools/serve.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

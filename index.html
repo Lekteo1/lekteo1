@@ -1,0 +1,540 @@
+<!doctype html>
+<!--
+  ============================================================================
+  Lekteo — front-end recreation of https://lekteo.eu/ (French home page)
+  ----------------------------------------------------------------------------
+  EDUCATIONAL / STUDY PROJECT — visual clone only.
+  This file contains no backend, no file parsing, no upload, no export and no
+  business logic of any kind. Every button, upload area and navigation control
+  is a visual placeholder. Not affiliated with the original site.
+  ============================================================================
+-->
+<html lang="fr" data-page="home">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ouvrir une facture électronique XML en ligne, gratuit</title>
+    <meta
+      name="description"
+      content="Déposez votre fichier XML ou votre PDF Factur-X : la facture s’affiche en clair et se contrôle sur la norme EN 16931. Gratuit, sans compte, sans téléversement."
+    />
+    <meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131211" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <script>
+      // Applies the stored appearance before the first paint (no flash).
+      (function () {
+        try {
+          var t = localStorage.getItem("lekteo.theme");
+          if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+        } catch (e) {}
+      })();
+    </script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#contenu-principal">Aller au contenu</a>
+
+    <!-- Inline icon sprite (Lucide, ISC licence) -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+        <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+        <path d="M10 9H8" />
+        <path d="M16 13H8" />
+        <path d="M16 17H8" />
+      </symbol>
+      <symbol id="i-file-stack" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 21a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1" />
+        <path d="M16 16a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1" />
+        <path d="M21 6a2 2 0 0 0-.586-1.414l-2-2A2 2 0 0 0 17 2h-3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1z" />
+      </symbol>
+      <symbol id="i-file-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+        <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+        <path d="M12 12v6" />
+        <path d="m15 15-3-3-3 3" />
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </symbol>
+      <symbol id="i-shield-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+        <path d="m9 12 2 2 4-4" />
+      </symbol>
+      <symbol id="i-file-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10.5 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v6" />
+        <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+        <path d="m14 20 2 2 4-4" />
+      </symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" />
+        <path d="M20 2v4" />
+        <path d="M22 4h-4" />
+        <circle cx="4" cy="20" r="2" />
+      </symbol>
+      <symbol id="i-scan-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 7V5a2 2 0 0 1 2-2h2" />
+        <path d="M17 3h2a2 2 0 0 1 2 2v2" />
+        <path d="M21 17v2a2 2 0 0 1-2 2h-2" />
+        <path d="M7 21H5a2 2 0 0 1-2-2v-2" />
+        <circle cx="12" cy="12" r="3" />
+        <path d="m16 16-1.9-1.9" />
+      </symbol>
+      <symbol id="i-languages" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m5 8 6 6" />
+        <path d="m4 14 6-6 2-3" />
+        <path d="M2 5h12" />
+        <path d="M7 2h1" />
+        <path d="m22 22-5-10-5 10" />
+        <path d="M14 18h6" />
+      </symbol>
+      <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18" />
+        <path d="m6 6 12 12" />
+      </symbol>
+      <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m6 9 6 6 6-6" />
+      </symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2" />
+        <path d="M12 20v2" />
+        <path d="m4.93 4.93 1.41 1.41" />
+        <path d="m17.66 17.66 1.41 1.41" />
+        <path d="M2 12h2" />
+        <path d="M20 12h2" />
+        <path d="m6.34 17.66-1.41 1.41" />
+        <path d="m19.07 4.93-1.41 1.41" />
+      </symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" />
+      </symbol>
+      <symbol id="i-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="20" height="14" x="2" y="3" rx="2" />
+        <line x1="8" x2="16" y1="21" y2="21" />
+        <line x1="12" x2="12" y1="17" y2="21" />
+      </symbol>
+    </svg>
+
+    <!-- Language suggestion (visual, dismissible) -->
+    <div class="lang-suggest" id="lang-suggest">
+      <div class="lang-suggest__inner">
+        <svg class="icon icon--16 lang-suggest__icon" aria-hidden="true"><use href="#i-languages" /></svg>
+        <p class="lang-suggest__text" lang="en">Ce site existe aussi en English.</p>
+        <a class="lang-suggest__link" href="#" hreflang="en" lang="en">Passer en English</a>
+        <button class="lang-suggest__dismiss" type="button" data-dismiss-lang aria-label="Rester en français">
+          <svg class="icon icon--14" aria-hidden="true"><use href="#i-x" /></svg>
+          <span class="lang-suggest__dismiss-label" aria-hidden="true">Rester en français</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ===================== HEADER ===================== -->
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="#">
+          <span class="brand__dot" aria-hidden="true"></span>
+          <span class="brand__name">Lekteo</span>
+        </a>
+
+        <div class="header-controls">
+          <nav class="pill-group lang-switch" aria-label="Langue">
+            <a class="lang-switch__link" href="#" hreflang="fr" lang="fr" aria-current="true" title="Afficher ce site en Français">fr<span class="sr-only"> — Français</span></a>
+            <a class="lang-switch__link" href="#" hreflang="en" lang="en" title="Afficher ce site en English">en<span class="sr-only"> — English</span></a>
+            <a class="lang-switch__link" href="#" hreflang="de" lang="de" title="Afficher ce site en Deutsch">de<span class="sr-only"> — Deutsch</span></a>
+            <a class="lang-switch__link" href="#" hreflang="nl" lang="nl" title="Afficher ce site en Nederlands">nl<span class="sr-only"> — Nederlands</span></a>
+          </nav>
+
+          <div class="pill-group theme-switch" role="group" aria-label="Apparence" data-theme-group>
+            <button class="theme-switch__button" type="button" data-theme-choice="light" aria-pressed="false" title="Thème clair">
+              <svg class="icon icon--16" aria-hidden="true"><use href="#i-sun" /></svg>
+              <span class="sr-only">Thème clair</span>
+            </button>
+            <button class="theme-switch__button" type="button" data-theme-choice="dark" aria-pressed="false" title="Thème sombre">
+              <svg class="icon icon--16" aria-hidden="true"><use href="#i-moon" /></svg>
+              <span class="sr-only">Thème sombre</span>
+            </button>
+            <button class="theme-switch__button" type="button" data-theme-choice="system" aria-pressed="true" title="Automatique : comme mon système">
+              <svg class="icon icon--16" aria-hidden="true"><use href="#i-monitor" /></svg>
+              <span class="sr-only">Automatique : comme mon système (actif)</span>
+            </button>
+          </div>
+        </div>
+
+        <nav class="site-nav" aria-label="Navigation principale">
+          <a class="site-nav__link site-nav__link--primary" href="#" aria-current="page">
+            <svg class="icon icon--16" aria-hidden="true"><use href="#i-file-text" /></svg>Ouvrir une facture
+          </a>
+          <a class="site-nav__link site-nav__link--primary" href="#">
+            <svg class="icon icon--16" aria-hidden="true"><use href="#i-file-stack" /></svg>Plusieurs fichiers
+          </a>
+          <span class="site-nav__divider" aria-hidden="true"></span>
+          <a class="site-nav__link site-nav__link--secondary" href="#">Factur-X</a>
+          <a class="site-nav__link site-nav__link--secondary" href="#">UBL</a>
+          <a class="site-nav__link site-nav__link--secondary" href="#">CII</a>
+          <a class="site-nav__link site-nav__link--secondary" href="#">Les trois formats</a>
+          <a class="site-nav__link site-nav__link--secondary" href="#">Échéance 2026</a>
+          <details class="nav-more">
+            <summary>
+              Comprendre
+              <svg class="icon icon--16" aria-hidden="true"><use href="#i-chevron-down" /></svg>
+            </summary>
+            <ul class="nav-more__list">
+              <li><a href="#">Factur-X</a></li>
+              <li><a href="#">UBL</a></li>
+              <li><a href="#">CII</a></li>
+              <li><a href="#">Les trois formats</a></li>
+              <li><a href="#">Échéance 2026</a></li>
+            </ul>
+          </details>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ===================== MAIN ===================== -->
+    <main id="contenu-principal" tabindex="-1">
+      <div class="hero-grid" aria-hidden="true"></div>
+
+      <div class="container hero">
+        <!-- Hero copy -->
+        <div class="hero__copy">
+          <h1 class="hero__title">Ouvrez les factures électroniques que personne ne peut lire</h1>
+          <p class="hero__lead">
+            Déposez votre fichier XML ou votre PDF Factur-X : Lekteo l’affiche en clair, vérifie les
+            règles de la norme européenne EN 16931 et vous dit ce qui cloche. Sans compte, et votre
+            fichier ne quitte jamais votre navigateur.
+          </p>
+        </div>
+
+        <!-- Upload area — visual placeholder only -->
+        <div class="dropzone-wrap">
+          <div class="dropzone" role="button" tabindex="0" aria-label="Déposez votre facture ici">
+            <span class="dropzone__icon" aria-hidden="true">
+              <svg class="icon icon--28"><use href="#i-file-up" /></svg>
+            </span>
+            <span class="dropzone__title dropzone__title--fine">Déposez votre facture ici</span>
+            <span class="dropzone__title dropzone__title--coarse">Choisissez votre facture</span>
+            <span class="dropzone__description dropzone__description--fine">
+              Glissez le fichier, ou cliquez pour le choisir sur votre ordinateur. Vous pouvez aussi
+              en déposer plusieurs d’un coup.
+            </span>
+            <span class="dropzone__description dropzone__description--coarse">
+              Appuyez pour prendre le fichier sur votre appareil : vos courriels, vos fichiers ou
+              votre espace de stockage. Vous pouvez en choisir plusieurs.
+            </span>
+            <span class="dropzone__cta" aria-hidden="true">Choisir un fichier</span>
+            <span class="dropzone__formats">
+              Formats acceptés : XML UBL, XML CII, PDF Factur-X — jusqu’à 20 Mo par fichier.
+            </span>
+          </div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="benefits">
+          <div class="benefit">
+            <span class="benefit__icon" aria-hidden="true">
+              <svg class="icon icon--20"><use href="#i-lock" /></svg>
+            </span>
+            <h2 class="benefit__title">Votre fichier reste chez vous</h2>
+            <p class="benefit__text">
+              La lecture se fait entièrement dans votre navigateur. Rien n’est envoyé sur un serveur,
+              rien n’est conservé, rien n’est analysé par personne.
+            </p>
+          </div>
+          <div class="benefit">
+            <span class="benefit__icon" aria-hidden="true">
+              <svg class="icon icon--20"><use href="#i-shield-check" /></svg>
+            </span>
+            <h2 class="benefit__title">Vérifiée sur la norme EN 16931</h2>
+            <p class="benefit__text">
+              Chaque règle contrôlée est expliquée en français : ce qui ne va pas, pourquoi la règle
+              existe, et où regarder dans la facture.
+            </p>
+          </div>
+          <div class="benefit">
+            <span class="benefit__icon" aria-hidden="true">
+              <svg class="icon icon--20"><use href="#i-file-check" /></svg>
+            </span>
+            <h2 class="benefit__title">Sans compte, sans installation</h2>
+            <p class="benefit__text">
+              Pas d’inscription, pas de logiciel à installer, pas de limite de temps. Vous exportez
+              ensuite en JSON ou en tableur.
+            </p>
+          </div>
+        </div>
+
+        <!-- Sample invoices -->
+        <section class="section" aria-labelledby="samples-title">
+          <div>
+            <h2 class="section__title" id="samples-title">
+              <svg class="icon icon--20" aria-hidden="true"><use href="#i-sparkles" /></svg>
+              Vous n’avez pas de fichier sous la main ?
+            </h2>
+            <p class="section__lead">
+              Essayez avec une facture d’exemple. Elles sont réelles dans leur structure, fictives
+              dans leur contenu.
+            </p>
+          </div>
+          <ul class="samples">
+            <li>
+              <article class="sample">
+                <h3 class="sample__title">Facture d’artisan, deux taux de TVA</h3>
+                <p class="sample__text">
+                  Une facture de travaux au format Factur-X, avec taux normal et taux réduit, acompte
+                  déjà versé et conditions de paiement. Tout est cohérent : aucun contrôle ne devrait
+                  échouer.
+                </p>
+                <button class="btn btn--secondary" type="button">Ouvrir cet exemple</button>
+              </article>
+            </li>
+            <li>
+              <article class="sample">
+                <h3 class="sample__title">Facture de prestation au format UBL</h3>
+                <p class="sample__text">
+                  Une prestation de services facturée au format UBL 2.1, avec période de facturation
+                  et remise commerciale au niveau du document.
+                </p>
+                <button class="btn btn--secondary" type="button">Ouvrir cet exemple</button>
+              </article>
+            </li>
+            <li>
+              <article class="sample sample--highlight">
+                <h3 class="sample__title">
+                  <svg class="icon icon--16" aria-hidden="true"><use href="#i-scan-search" /></svg>
+                  Une facture qui pose problème
+                </h3>
+                <p class="sample__text">
+                  Sept anomalies volontaires : TVA mal calculée, total incohérent, exonération sans
+                  motif, IBAN erroné, clé de numéro de TVA fausse, unité manquante et échéance
+                  antérieure à l’émission.
+                </p>
+                <button class="btn btn--primary" type="button">Voir ce que Lekteo détecte</button>
+              </article>
+            </li>
+          </ul>
+        </section>
+
+        <!-- Batch -->
+        <section class="section" aria-labelledby="batch-title">
+          <div class="batch">
+            <div class="batch__copy">
+              <svg class="icon icon--20" aria-hidden="true"><use href="#i-file-stack" /></svg>
+              <div>
+                <h2 class="batch__title" id="batch-title">Vous en avez plusieurs à ouvrir ?</h2>
+                <p class="batch__text">
+                  Déposez jusqu’à cinq fichiers d’un coup : Lekteo en dresse un tableau récapitulatif
+                  avec le fournisseur, le montant et la conformité de chacun.
+                </p>
+              </div>
+            </div>
+            <button class="btn btn--secondary" type="button">Traiter plusieurs fichiers</button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ===================== EDITORIAL CONTENT ===================== -->
+    <section class="prose-band" id="contenu-accueil" aria-label="En savoir plus sur Lekteo">
+      <div class="prose">
+        <section>
+          <h2>Ce que vous avez reçu, et pourquoi ça ne s’ouvre pas</h2>
+          <p>
+            Un fichier arrive par courriel ou par votre plateforme. Il s’appelle
+            <code>FA-2026-0847.xml</code>, ou c’est un PDF <a href="#">Factur-X</a> qui ne montre
+            presque rien. Vous double-cliquez, et vous obtenez un mur de balises.
+          </p>
+          <p>
+            Ce n’est pas une erreur de votre part. Une facture électronique n’est pas un document
+            conçu pour l’œil humain : c’est un fichier de données, destiné à être repris
+            automatiquement par un logiciel comptable. Les balises que vous voyez <em>sont</em> les
+            informations de la facture.
+          </p>
+          <p>
+            Il vous manque simplement l’outil qui remet ces données en forme. Si votre fichier est un
+            <code>.xml</code> nu, la page <a href="#">ouvrir un fichier XML de facture</a> détaille le
+            cas. Et si vous vous demandez pourquoi ces fichiers arrivent maintenant, le
+            <a href="#">calendrier de l’obligation</a> l’explique.
+          </p>
+        </section>
+
+        <section>
+          <h2>Comment lire le fichier, en trois gestes</h2>
+          <ol>
+            <li>
+              Glissez le fichier sur la zone de dépôt, ou cliquez pour le choisir. Les extensions
+              attendues sont <code>.xml</code> et <code>.pdf</code>.
+            </li>
+            <li>
+              La facture s’affiche : émetteur, client, lignes, TVA, total à payer, échéance,
+              coordonnées bancaires.
+            </li>
+            <li>
+              Si un point mérite votre attention, un constat apparaît sous la facture, en français.
+            </li>
+          </ol>
+          <p>
+            Rien à créer, rien à installer, aucune adresse à laisser. Vous n’avez pas non plus à
+            savoir quel format vous tenez : il est reconnu à la lecture. Le
+            <a href="#">comparatif des trois formats</a> vous dira lequel vous avez reçu.
+          </p>
+        </section>
+
+        <section>
+          <h2>Ce que Lekteo affiche</h2>
+          <p>Une facture remise en forme, dans l’ordre où vous la lisez d’habitude :</p>
+          <ul>
+            <li>
+              <strong>Les deux parties</strong> : raison sociale, adresse, numéro de TVA
+              intracommunautaire, SIREN ou SIRET.
+            </li>
+            <li>
+              <strong>Le détail des lignes</strong> : désignation, quantité, unité, prix unitaire,
+              remise éventuelle, taux de TVA appliqué.
+            </li>
+            <li>
+              <strong>La ventilation de TVA</strong> : pour chaque taux, la base imposable et le
+              montant de taxe correspondant.
+            </li>
+            <li>
+              <strong>Les totaux</strong> : total hors taxes, total de TVA, total toutes taxes
+              comprises, acompte déjà versé, net à payer.
+            </li>
+            <li>
+              <strong>Le règlement</strong> : date d’échéance, moyen de paiement, IBAN à créditer,
+              référence à rappeler.
+            </li>
+          </ul>
+          <p>
+            Chaque information porte aussi son identifiant normalisé&nbsp;: <code>BT-1</code> pour le
+            numéro de facture, <code>BT-9</code> pour la date d’échéance. Ces codes viennent de la
+            norme européenne EN 16931 et servent le jour où vous devez désigner un champ précis à un
+            tiers.
+          </p>
+        </section>
+
+        <section>
+          <h2>Ce qui est vérifié, et pourquoi</h2>
+          <p>
+            EN 16931 est la norme européenne qui définit le contenu d’une facture : les informations
+            qu’elle doit porter, les termes <code>BT-xx</code>, et les règles de cohérence qu’elle
+            doit respecter, les règles <code>BR-xx</code>. Lekteo contrôle ces règles et explique
+            chaque constat en français.
+          </p>
+          <p>
+            Il signale par exemple qu’un montant de TVA ne correspond pas à sa base, qu’un total ne
+            tombe pas juste, qu’une mention obligatoire manque, qu’un IBAN ou un SIREN ne passe pas sa
+            clé de contrôle, ou qu’une date d’échéance précède la date d’émission. Chaque constat dit
+            ce qui ne va pas avec les chiffres réels du fichier, pourquoi la règle existe, et où
+            regarder dans la facture.
+          </p>
+          <p>
+            Un constat n’est pas un avis comptable. Lekteo dit ce que dit la norme ; la décision de
+            payer ou de contester reste la vôtre.
+          </p>
+        </section>
+
+        <section>
+          <h2>Pourquoi votre fichier ne part sur aucun serveur</h2>
+          <p>
+            Une facture contient votre chiffre d’affaires, le nom de vos clients, vos conditions
+            commerciales, souvent vos coordonnées bancaires. Ce ne sont pas des données que l’on
+            confie à un service inconnu pour voir un tableau.
+          </p>
+          <p>
+            Lekteo s’exécute entièrement dans votre navigateur, en JavaScript local. Le fichier est
+            ouvert sur votre machine et n’est transmis nulle part : ni téléversement, ni compte, ni
+            base de données. Vous pouvez le vérifier : coupez votre connexion une fois la page
+            chargée, la lecture fonctionne toujours.
+          </p>
+          <p>
+            Une fois la facture affichée, vous pouvez l’exporter en JSON ou en CSV pour la reprendre
+            dans un tableur ou dans votre outil de saisie. L’export aussi est produit sur votre poste.
+          </p>
+        </section>
+
+        <section class="faq">
+          <h2>Questions fréquentes</h2>
+          <details>
+            <summary>Faut-il créer un compte pour ouvrir une facture ?</summary>
+            <p>
+              Non. Il n’y a ni compte, ni adresse de courriel à donner, ni logiciel à installer. Vous
+              ouvrez la page, vous déposez le fichier, vous lisez.
+            </p>
+          </details>
+          <details>
+            <summary>Puis-je ouvrir un fichier de facture XML avec Excel ou avec Word ?</summary>
+            <p>
+              Techniquement oui, et le résultat est presque toujours inexploitable. Excel propose un
+              plan de colonnes qui ne ressemble à aucune facture, et Word affiche le code source tel
+              quel. Ces outils ne connaissent pas la structure d’une facture électronique : rien ne
+              leur dit quelle balise contient le net à payer.
+            </p>
+          </details>
+          <details>
+            <summary>Mon fichier est un .xml mais j’ignore de quel format il s’agit. Est-ce gênant ?</summary>
+            <p>
+              Non. Le format est identifié à la lecture, à partir de la première balise du fichier.
+              Vous n’avez rien à choisir avant de déposer, et le nom du format comme celui du profil
+              s’affichent ensuite en haut de la facture.
+            </p>
+          </details>
+          <details>
+            <summary>Le fichier est-il conservé quelque part après la lecture ?</summary>
+            <p>
+              Non. Il n’est envoyé à aucun serveur et n’est enregistré nulle part. Le traitement a
+              lieu dans l’onglet ouvert ; le fermer y met fin. Votre fichier reste sur votre machine,
+              intact.
+            </p>
+          </details>
+          <details>
+            <summary>Que faire si un constat signale une erreur sur une facture que je dois payer ?</summary>
+            <p>
+              Commencez par lire le constat : il indique le montant attendu et le montant déclaré. Si
+              l’écart est réel, demandez une facture rectificative ou un avoir avant de régler. Lekteo
+              constate un écart, il ne décide pas à votre place.
+            </p>
+          </details>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===================== FOOTER ===================== -->
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div>
+          <h2>Lekteo</h2>
+          <p class="footer-note">
+            Ouvrez les factures électroniques que personne ne peut lire. Vos fichiers sont lus dans
+            votre navigateur : rien n’est envoyé sur un serveur, rien n’est conservé.
+          </p>
+        </div>
+        <div>
+          <h2>Comprendre</h2>
+          <ul>
+            <li><a href="#">Factur-X</a></li>
+            <li><a href="#">UBL</a></li>
+            <li><a href="#">CII</a></li>
+            <li><a href="#">Les trois formats</a></li>
+            <li><a href="#">Échéance 2026</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Le service</h2>
+          <ul>
+            <li><a href="#">Ouvrir une facture</a></li>
+            <li><a href="#">Traiter plusieurs fichiers</a></li>
+            <li><a href="#">Depuis votre assistant (MCP)</a></li>
+            <li><a href="#">Mentions légales et confidentialité</a></li>
+            <li><a href="#">Revenir sur mon choix de publicité</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
